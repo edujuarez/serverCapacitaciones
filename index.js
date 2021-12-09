@@ -14,9 +14,9 @@ app.use(cors());
 const pool = mysql.createPool({
     connectionLimit : 10,
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'capacitacionesdb'
+    user: 'id18095829_root',
+    password: 'mMi4&9Skr_RI&]Pe',
+    database: 'id18095829_capacitacionesdb'
 });
 
 
