@@ -72,7 +72,6 @@ app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
 
             if (!err) {
                 res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
-                res.redirect('/home');
             } else {
                 console.log(err)
             }
@@ -124,7 +123,6 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
 
             if (!err) {
                 res.send(` La capacitacion ${nombre} ha sido modificada.`)
-                res.redirect('/capacitaciones');
             } else {
                 console.log(err)
             }
@@ -167,16 +165,16 @@ app.get('/asistente/:id', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(rows)
+                 return res.send(rows)
             } else {
                 console.log(err)
             }
-        })
+        })  
     })
 });
 
 //Delete asistente
-app.delete('/asistente/:idasistente/delete', (req, res)=> {
+app.delete('/asistente/:id/delete', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected to delete as id ${connection.threadId}`)
@@ -186,7 +184,7 @@ app.delete('/asistente/:idasistente/delete', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(`asistente con el ID: ${[req.params.id]} ha sido eliminado`)
+                return res.send(`asistente con el ID: ${[req.params.id]} ha sido eliminado`)
             } else {
                 console.log(err)
             }
@@ -207,7 +205,7 @@ app.post('/asistente/nuevo', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(` el asistente ${params.nombre} ha sido agregado.`)
+                return res.send(` el asistente ${params.nombre} ha sido agregado.`)
             } else {
                 console.log(err)
             }
