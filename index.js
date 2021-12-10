@@ -1,3 +1,4 @@
+require ('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -13,12 +14,17 @@ app.use(cors());
 //MySQL
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host: 'localhost',
-    user: 'id18095829_root',
-    password: 'mMi4&9Skr_RI&]Pe',
-    database: 'id18095829_capacitacionesdb'
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_DATABASE || 'capacitacionesdb'
 });
 
+//se activa puerto en puerto especifico
+const PORT = 3006
+app.listen(PORT, () => {
+   console.log(`Corriendo en ${PORT}`) 
+})
 
 //CAPACITACIONES CONECCIONES
 //POST CAPACITACIONES
@@ -249,8 +255,4 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
 });
 
 
-//se activa puerto en puerto especifico
-const PORT = 3006
-app.listen(PORT, () => {
-   console.log(`Corriendo en ${PORT}`) 
-})
+
