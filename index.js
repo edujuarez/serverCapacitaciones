@@ -21,7 +21,7 @@ const pool = mysql.createPool({
 });
 
 //se activa puerto en puerto especifico
-const PORT = 3006
+const PORT = process.env.PORT || 3006
 app.listen(PORT, () => {
    console.log(`Corriendo en ${PORT}`) 
 })
