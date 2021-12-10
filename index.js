@@ -25,6 +25,9 @@ const PORT = 3006
 app.listen(PORT, () => {
    console.log(`Corriendo en ${PORT}`) 
 })
+app.get('/', function(req, res) {
+    res.send('Funcionando')
+});
 
 //CAPACITACIONES CONECCIONES
 //POST CAPACITACIONES
