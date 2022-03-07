@@ -23,12 +23,12 @@ const PORT = 3006 //process.env.PORT ||*/
 
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host:  process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    host:  process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_DATABASE || 'capacitacionesdb',
 });
-const PORT = process.env.PORT
+const PORT = process.env.PORT || '3006'
 
 //se activa puerto en puerto especifico
 app.listen(PORT, () => {
@@ -50,7 +50,7 @@ app.post('/capacitaciones/nuevo', (req, res) => {
 
             if (!err) {
                 res.send(`la capacitacion ${params.nombre} ha sido agregada correctamente.`)
-                res.redirect('/capacitacion')
+                res.redirect('/addasistentes/:idcapacitacion')
             } else {
                 console.log(err)
             }
@@ -281,18 +281,18 @@ app.post('/addasistentes', (req, res) => {
     })
 });
 //envia asistentes de capacitacion especifica
-app.get('/addasistentes', (req, res)=> {
+app.get('/addasistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('SELECT * from asistencia WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
+        connection.query('SELECT * from asistencia WHERE capacitacionID = ?', [req.params.idcapacitacion], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
                 res.send(rows)
-                console.log(`Enviado asistentes de id ${req.params.idcapacitaciones}`)
+                console.log(`Enviado asistentes de id ${req.params.idcapacitacion}`)
             } else {
                 console.log(err)
             }
