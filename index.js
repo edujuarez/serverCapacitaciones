@@ -12,16 +12,25 @@ app.use(express.json());
 app.use(cors());
 
 //MySQL
+/*const pool = mysql.createPool({
+    connectionLimit : 10,
+    host:  'localhost', //process.env.DB_HOST ||
+    user: 'root', //process.env.DB_USER || 
+    password: '', //process.env.DB_PASSWORD || ,
+    database: 'capacitacionesdb'//process.env.DB_DATABASE || 
+});
+const PORT = 3006 //process.env.PORT ||*/
+
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_DATABASE || 'capacitacionesdb'
+    host:  process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
+const PORT = process.env.PORT
 
 //se activa puerto en puerto especifico
-const PORT = process.env.PORT || 3006
 app.listen(PORT, () => {
    console.log(`Corriendo en ${PORT}`) 
 })
@@ -99,7 +108,7 @@ app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
 
             if (!err) {
                 res.send(rows)
-                console.log(`enviado usuario de id ${req.params.idcapacitaciones}`)
+                console.log(`Enviado usuario de id ${req.params.idcapacitaciones}`)
             } else {
                 console.log(err)
             }
@@ -131,7 +140,7 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(` La capacitacion ${nombre} ha sido modificada.`)
+                res.send(` La capacitación ${nombre} ha sido modificada.`)
             } else {
                 console.log(err)
             }
@@ -193,7 +202,7 @@ app.delete('/asistente/:id/delete', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                return res.send(`asistente con el ID: ${[req.params.id]} ha sido eliminado`)
+                return res.send(`Asistente con el ID: ${[req.params.id]} ha sido eliminado`)
             } else {
                 console.log(err)
             }
@@ -214,7 +223,7 @@ app.post('/asistente/nuevo', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                return res.send(` el asistente ${params.nombre} ha sido agregado.`)
+                return res.send(`El asistente ${params.nombre} ha sido agregado.`)
             } else {
                 console.log(err)
             }
@@ -247,7 +256,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(` el asistente ${nombre} ha sido modificado.`)
+                res.send(`El asistente ${nombre} ha sido modificado.`)
             } else {
                 console.log(err)
             }
@@ -256,6 +265,37 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
         console.log(req.body)
     })
 });
+//une capacitaciones con los asistentes
+app.post('/addasistentes', (req, res) => {
+    pool.getConnection((err, connection) => {
+    const params = req.body
+    params.forEach(element => {
+        connection.query('INSERT INTO asistencia SET ?', element, (err, rows) => {
+            })})
+        connection.release() //devuelve la conecction a la pool    
+        if (!err) {
+            return res.send(`Los asistentes de la capacitación han sido agregada correctamente.`)
+        } else {
+            return console.log(err)
+        }        
+    })
+});
+//envia asistentes de capacitacion especifica
+app.get('/addasistentes', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
 
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
 
-
+            if (!err) {
+                res.send(rows)
+                console.log(`Enviado asistentes de id ${req.params.idcapacitaciones}`)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
