@@ -49,8 +49,7 @@ app.post('/capacitaciones/nuevo', (req, res) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(`la capacitacion ${params.nombre} ha sido agregada correctamente.`)
-                res.redirect('/addasistentes/:idcapacitacion')
+                return res.send(`la capacitacion ${params.nombre} ha sido agregada correctamente.`)
             } else {
                 console.log(err)
             }
@@ -70,7 +69,7 @@ app.get('/capacitaciones', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(rows)
+                return res.send(rows)
             } else {
                 console.log(err)
             }
@@ -89,7 +88,7 @@ app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
+               res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
             } else {
                 console.log(err)
             }
@@ -107,8 +106,8 @@ app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(rows)
                 console.log(`Enviado usuario de id ${req.params.idcapacitaciones}`)
+                return res.send(rows)
             } else {
                 console.log(err)
             }
@@ -132,7 +131,6 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
             plan,
             material,
             observaciones,
-            invitados
         } = req.body
 
         connection.query('UPDATE capacitaciones SET nombre = ?, temario = ?, tipo = ?, certificacion = ?, fecha = ?, plan = ?, material = ?, observaciones = ?, invitados = ? WHERE idcapacitaciones = ?',
@@ -140,7 +138,7 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(` La capacitación ${nombre} ha sido modificada.`)
+                return res.send(` La capacitación ${nombre} ha sido modificada.`)
             } else {
                 console.log(err)
             }
@@ -164,7 +162,7 @@ app.get('/asistente', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(rows)
+                return res.send(rows)
             } else {
                 console.log(err)
             }
@@ -256,7 +254,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(`El asistente ${nombre} ha sido modificado.`)
+                return res.send(`El asistente ${nombre} ha sido modificado.`)
             } else {
                 console.log(err)
             }
@@ -291,11 +289,75 @@ app.get('/addasistentes/:idcapacitacion', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                res.send(rows)
                 console.log(`Enviado asistentes de id ${req.params.idcapacitacion}`)
+                return res.send(rows)
             } else {
                 console.log(err)
             }
         })
     })
 });
+
+
+//Edit/update de asistentes
+app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw errcd
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        const {
+            capacitacionID,
+            invitadoID,
+            asistencia,
+            nombre
+        } = req.body
+
+        connection.query('UPDATE asistencia SET capacitacionID = ?, invitadoID = ?, asistencia = ?, nombre = ?, WHERE idcapacitaciones = ?',
+        [capacitacionID,
+            invitadoID,
+            asistencia,
+            nombre], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                return res.send(` Los asistentes de la capacitacion han sido modificados.`)
+            } else {
+                console.log(err)
+            }
+        })
+
+        console.log(req.body)
+    })
+});
+
+//Envia asistentes de capacitacion especifica
+app.get('/asistentes/:idcapacitacion', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia WHERE capacitacionID = ?', [req.params.idcapacitacion], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                console.log(`Enviado asistentes de id ${req.params.idcapacitacion}`)
+                return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
+
+//busqueda de asistentes y capacitaciones
+/*app.get('/search/:key', async (req, res)=> {
+    let result = await Product.find({
+        "$or" : [
+            {
+                name:
+            }
+        ]
+    })
+});*/
