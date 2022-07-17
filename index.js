@@ -351,13 +351,22 @@ app.get('/asistentes/', (req, res)=> {
     })
 });
 
-//busqueda de asistentes y capacitaciones
-/*app.get('/search/:key', async (req, res)=> {
-    let result = await Product.find({
-        "$or" : [
-            {
-                name:
+//Edita puntaje de id especifico
+app.put('/asistentes/updatenota', (req,res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        connection.query('UPDATE asistencia SET puntaje = ? WHERE id =? ',[nota, id], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                console.log(`Puntaje editado`)
+                return res.send(rows)
+            } else {
+                console.log(err)
             }
-        ]
+        })
     })
-});*/
+});
