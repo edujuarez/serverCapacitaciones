@@ -352,13 +352,13 @@ app.get('/asistentes/', (req, res)=> {
 });
 
 //Edita puntaje de id especifico
-app.put('/asistencia/updatepuntaje', (req,res)=> {
+app.put('/asistencia/updatepuntaje', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('UPDATE asistencia SET puntaje = ? WHERE id =? ',[puntaje, id], (err, rows) => {
+        connection.query('UPDATE asistencia SET puntaje = ? WHERE id = ? ',[req.params.puntaje, req.params.id], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
