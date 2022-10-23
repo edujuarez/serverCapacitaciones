@@ -82,11 +82,9 @@ app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
-
         //query(sqlString, callback)
         connection.query('DELETE from capacitaciones WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
-
             if (!err) {
                res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
             } else {
@@ -351,8 +349,28 @@ app.get('/asistentes/', (req, res)=> {
     })
 });
 
+//get asistentes by ID
+app.get('/asistencia/:id', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                 return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })  
+    })
+});
+
+
 //Edita puntaje de id especifico
-app.put('/asistencia/updatepuntaje', (req, res)=> {
+app.put(`/updatepuntaje`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
@@ -364,6 +382,36 @@ app.put('/asistencia/updatepuntaje', (req, res)=> {
             if (!err) {
                 console.log(`Puntaje editado`)
                 return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
+
+//Elimina asistente de capacitacion especifica
+/*app.delete('/asistencia/delete/:idasistente', (req, res) => {
+    pool.getConnection((err, connection) => {
+        if (err) throw err
+        console.log('conectado con el id $P'
+    })
+}*/
+
+
+
+
+//Delete capacitaciones
+app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        connection.query('DELETE from capacitaciones WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+               res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
             } else {
                 console.log(err)
             }
