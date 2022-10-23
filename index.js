@@ -336,7 +336,7 @@ app.get('/asistentes/', (req, res)=> {
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('SELECT * from asistencia', (err, rows) => {
+        connection.query('SELECT * from asistencia WHERE eliminado = 0', (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
@@ -392,41 +392,22 @@ app.put(`/updatepuntaje`, (req, res)=> {
     })
 });
 
-//DELETE ASISTENTES DE CAPACITACION
-app.delete(`/deleteasistente`), (req, res)=> {
+//DELETE ASISTENTES DE CAPACITACION - lo desactiva
+app.put(`/deleteasistente`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
         const {
-            id
+            id,
+            puntaje
         } = req.body
         //query(sqlString, callback)
-        connection.query('DELETE FROM asistencia WHERE id= ? ',[id], (err, rows) => {
+        connection.query('UPDATE asistencia SET eliminado = 1 WHERE id = ? ',[id], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                console.log(`Asistente Eliminado`)
+                console.log(`asistente eliminado`)
                 return res.send(`Asistente con id ${id} fue eliminado`)
-            } else {
-                console.log(err)
-            }
-        })
-    })
-};
-
-
-//Delete capacitaciones
-app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
-    pool.getConnection((err, connection) => {
-        if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
-
-        //query(sqlString, callback)
-        connection.query('DELETE from capacitaciones WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
-            connection.release() //devuelve la conecction a la pool
-
-            if (!err) {
-               res.send(`Capacitacion con el ID: ${[req.params.idcapacitaciones]} ha sido eliminada`)
             } else {
                 console.log(err)
             }
