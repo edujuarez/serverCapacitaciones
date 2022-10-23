@@ -391,6 +391,7 @@ app.put(`/updatepuntaje`, (req, res)=> {
         })
     })
 });
+
 //DELETE ASISTENTES DE CAPACITACION
 app.delete(`/deleteasistente`), (req, res)=> {
     pool.getConnection((err, connection) => {
@@ -411,7 +412,7 @@ app.delete(`/deleteasistente`), (req, res)=> {
             }
         })
     })
-});
+};
 
 
 //Delete capacitaciones
