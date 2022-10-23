@@ -391,6 +391,27 @@ app.put(`/updatepuntaje`, (req, res)=> {
         })
     })
 });
+//DELETE ASISTENTES DE CAPACITACION
+app.delete(`/deleteasistente`), (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+        const {
+            id
+        } = req.body
+        //query(sqlString, callback)
+        connection.query('DELETE FROM asistencia WHERE id= ? ',[id], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                console.log(`Asistente Eliminado`)
+                return res.send(`Asistente con id ${id} fue eliminado`)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
 
 
 //Delete capacitaciones
