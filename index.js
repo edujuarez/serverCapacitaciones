@@ -374,9 +374,12 @@ app.put(`/updatepuntaje`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
-
+        const {
+            id,
+            puntaje
+        } = req.body
         //query(sqlString, callback)
-        connection.query('UPDATE asistencia SET puntaje = ? WHERE id = ? ',[req.params.puntaje, req.params.id], (err, rows) => {
+        connection.query('UPDATE asistencia SET puntaje = ? WHERE id = ? ',[puntaje, id], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
