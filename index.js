@@ -384,23 +384,15 @@ app.put(`/updatepuntaje`, (req, res)=> {
 
             if (!err) {
                 console.log(`Puntaje editado`)
-                return res.send(`Asistente con id ${req.params.id} ha modificado su puntaje a ${req.params.puntaje} `)
+                return res.send(`Asistente con id ${id} ha modificado su puntaje a ${puntaje} `)
+                return res.redirect('/search');
+
             } else {
                 console.log(err)
             }
         })
     })
 });
-
-//Elimina asistente de capacitacion especifica
-/*app.delete('/asistencia/delete/:idasistente', (req, res) => {
-    pool.getConnection((err, connection) => {
-        if (err) throw err
-        console.log('conectado con el id $P'
-    })
-}*/
-
-
 
 
 //Delete capacitaciones
