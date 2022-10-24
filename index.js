@@ -401,7 +401,7 @@ app.put(`/updatepuntaje`, (req, res)=> {
             asistencia
         } = req.body
         //query(sqlString, callback)
-        connection.query('UPDATE asistencia SET puntaje = ?, asistencia = ? WHERE id = ? ',[puntaje, id, asistencia], (err, rows) => {
+        connection.query('UPDATE asistencia SET puntaje = ?, asistencia = ? WHERE id = ? ',[puntaje, asistencia, id ], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
