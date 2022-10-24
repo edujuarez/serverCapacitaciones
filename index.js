@@ -397,10 +397,11 @@ app.put(`/updatepuntaje`, (req, res)=> {
         console.log(`connected as id ${connection.threadId}`)
         const {
             id,
-            puntaje
+            puntaje,
+            asistencia
         } = req.body
         //query(sqlString, callback)
-        connection.query('UPDATE asistencia SET puntaje = ? WHERE id = ? ',[puntaje, id], (err, rows) => {
+        connection.query('UPDATE asistencia SET puntaje = ?, asistencia = WHERE id = ? ',[puntaje, id], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
