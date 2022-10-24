@@ -123,7 +123,7 @@ app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('SELECT * from capacitaciones WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
+        connection.query('SELECT * from capacitaciones WHERE idcapacitacion = ? AND eliminado = 0', [req.params.idcapacitaciones], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
