@@ -93,6 +93,29 @@ app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
         })
     })
 });
+//DELETE  CAPACITACION - lo desactiva
+app.put(`/deletecapacitacion`, (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+        const {
+            id
+        } = req.body
+        //query(sqlString, callback)
+        connection.query('UPDATE capacitaciones SET eliminado = 1 WHERE idcapacitacion = ? ',[id], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                console.log(`Capacitacion eliminada`)
+                return res.send(`Capacitacion con id ${id} fue eliminada`)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
+
+
 //get capacitaciones by ID
 app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
     pool.getConnection((err, connection) => {
@@ -234,8 +257,6 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected to edit as id ${connection.threadId}`)
-
-        //query(sqlString, callback)
         const {
             idasistente,
             nombre,
