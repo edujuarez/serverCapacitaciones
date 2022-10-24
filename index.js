@@ -232,7 +232,7 @@ app.post('/asistente/nuevo', (req, res)=> {
 //Edit/update an asistente
 app.put('/asistente/:idasistente/edit', (req, res)=> {
     pool.getConnection((err, connection) => {
-        if(err) throw errcd
+        if(err) throw err
         console.log(`connected to edit as id ${connection.threadId}`)
 
         //query(sqlString, callback)
