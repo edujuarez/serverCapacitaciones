@@ -248,7 +248,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
         } = req.body
 
         connection.query('UPDATE asistentes SET nombre = ?, legajo = ?, tipodoc = ?, dni = ?, cargo = ?, sector = ?, fechaingreso = ? WHERE idasistente = ?',
-        [nombre, legajo, tipodoc, dni, cargo, sector, fechaingreso, idasistente], (err, rows) => {
+        [idasistente, nombre, legajo, tipodoc, dni, cargo, sector, fechaingreso], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
