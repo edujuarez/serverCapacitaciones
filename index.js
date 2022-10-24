@@ -65,7 +65,7 @@ app.get('/capacitaciones', (req, res)=> {
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('SELECT * from capacitaciones',(err, rows) => {
+        connection.query('SELECT * from capacitaciones WHERE eliminado = 0',(err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
