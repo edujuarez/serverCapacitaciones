@@ -321,7 +321,7 @@ app.get('/addasistentes/:idcapacitacion', (req, res)=> {
 //Edit/update de asistentes
 app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
     pool.getConnection((err, connection) => {
-        if(err) throw errcd
+        if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
