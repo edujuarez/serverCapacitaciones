@@ -282,6 +282,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
         console.log(req.body)
     })
 });
+
 //une capacitaciones con los asistentes
 app.post('/addasistentes', (req, res) => {
     pool.getConnection((err, connection) => {
@@ -297,6 +298,7 @@ app.post('/addasistentes', (req, res) => {
         }        
     })
 });
+
 //envia asistentes de capacitacion especifica
 app.get('/addasistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
@@ -398,10 +400,11 @@ app.put(`/updatepuntaje`, (req, res)=> {
         const {
             id,
             puntaje,
-            asistencia
+            asistencia,
+            porcentaje
         } = req.body
         //query(sqlString, callback)
-        connection.query('UPDATE asistencia SET puntaje = ?, asistencia = ? WHERE id = ? ',[puntaje, asistencia, id ], (err, rows) => {
+        connection.query('UPDATE asistencia SET puntaje = ?, asistencia = ? porcentaje = ? WHERE id = ? ',[puntaje, asistencia, id, porcentaje ], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
