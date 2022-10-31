@@ -409,13 +409,13 @@ app.put(`/updatepuntaje`, (req, res)=> {
 
             if (!err) {
                 console.log(`Puntaje editado`)
-                return res.send(`Asistente con id ${id} ha modificado su puntaje a ${puntaje} `)
+                return res.send(`Asistente con id ${id} ha modificado su puntaje a ${puntaje}. `)
             } else {
                 console.log(err)
             }
         })
     })
-});
+}); 
 
 //DELETE ASISTENTES DE CAPACITACION - lo desactiva
 app.put(`/deleteasistente`, (req, res)=> {
