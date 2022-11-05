@@ -439,3 +439,27 @@ app.put(`/deleteasistente`, (req, res)=> {
         })
     })
 });
+
+
+//FILTRA POR FECHA
+app.get('/filter/', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+        const {
+            busqueda,
+            finicio,
+            ffin
+        } = req.body
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia WHERE busqueda = ? && (finicio <= fecha && ffin >= fecha)', [busqueda], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                 return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })  
+    })
+});
