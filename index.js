@@ -452,7 +452,7 @@ app.get('/filter/', (req, res)=> {
             ffin
         } = req.body
         //query(sqlString, callback)
-        connection.query('SELECT * from asistencia WHERE busqueda = ? && (finicio <= fecha && ffin >= fecha)', [busqueda], (err, rows) => {
+        connection.query('SELECT * from asistencia WHERE busqueda = ? && (? <= fecha && ? >= fecha)', [busqueda, finicio, ffin], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
