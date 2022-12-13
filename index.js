@@ -319,6 +319,24 @@ app.get('/addasistentes/:idcapacitacion', (req, res)=> {
     })
 });
 
+//Envia todas las asistencias
+app.get('/asistencia', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia',(err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
 
 //Edit/update de asistentes
 app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
