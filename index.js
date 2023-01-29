@@ -458,7 +458,7 @@ app.put(`/deleteasistente`, (req, res)=> {
     })
 });
 //Delete capacitaciones
-app.delete('/deleteasistente', (req, res)=> {
+app.delete('/deleteasistente/:idasistente', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
