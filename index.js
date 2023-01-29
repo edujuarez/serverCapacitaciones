@@ -457,7 +457,22 @@ app.put(`/deleteasistente`, (req, res)=> {
         })
     })
 });
-
+//Delete capacitaciones
+app.delete('/deleteasistente', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+        //query(sqlString, callback)
+        connection.query('DELETE from asistencia WHERE id = ?', [req.params.idasistente], (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+            if (!err) {
+               res.send(`Capacitacion con el ID: ${[req.params.idasistente]} ha sido eliminada`)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
 
 //FILTRA POR FECHA
 app.get('/filter/', (req, res)=> {
