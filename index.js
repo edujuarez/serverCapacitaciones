@@ -381,7 +381,7 @@ app.get('/asistentes/:idcapacitacion', (req, res)=> {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
-                console.log(`Enviados asistentes de capacitacion ${req.params.idcapacitacion}`)
+                console.log(`Enviados asistentes de capacitacion pedida`)
                 return res.send(rows)
             } else {
                 console.log(err)
