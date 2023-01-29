@@ -16,7 +16,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "devStart": "nodemon index.js",
-    "build": "webpack --config=Scripts/config/webpack.prod.js"
 
   },
   "author": "",
