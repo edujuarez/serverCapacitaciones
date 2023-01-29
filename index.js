@@ -371,13 +371,13 @@ app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
 });
 
 //Envia asistentes de capacitacion especifica
-app.get(`/asistentes/:idcapacitacion`, (req, res)=> {
+app.get('/asistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
         //query(sqlString, callback)
-        connection.query('SELECT * from asistencia WHERE capacitacionID = ?',[req.params.idcapacitacion], (err, rows) => {
+        connection.query('SELECT * from asistencia WHERE capacitacionID = ?', [req.params.idcapacitacion], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
