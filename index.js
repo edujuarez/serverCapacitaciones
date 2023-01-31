@@ -369,7 +369,24 @@ app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
         console.log(req.body)
     })
 });
+app.get('/asistentes/', (req, res)=> {
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
 
+        //query(sqlString, callback)
+        connection.query('SELECT * from asistencia WHERE eliminado = 0', (err, rows) => {
+            connection.release() //devuelve la conecction a la pool
+
+            if (!err) {
+                console.log(`Enviados asistentes`)
+                return res.send(rows)
+            } else {
+                console.log(err)
+            }
+        })
+    })
+});
 //Envia asistentes de capacitacion especifica
 app.get('/asistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
