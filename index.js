@@ -255,10 +255,11 @@ app.post('/asistente/nuevo', (req, res)=> {
 //Edit/update an asistente
 app.put('/asistente/:idasistente/edit', (req, res)=> {
     pool.getConnection((err, connection) => {
+        //determino id de asistente desde la url
+        const idasistente = req.params.idasistente;
         if(err) throw err
         console.log(`connected to edit as id ${connection.threadId}`)
         const {
-            idasistente,
             nombre,
             legajo,
             tipodoc,
@@ -269,7 +270,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
         } = req.body
 
         connection.query('UPDATE asistentes SET nombre = ?, legajo = ?, tipodoc = ?, dni = ?, cargo = ?, sector = ?, fechaingreso = ? WHERE idasistente = ?',
-        [idasistente, nombre, legajo, tipodoc, dni, cargo, sector, fechaingreso], (err, rows) => {
+        [ nombre, legajo, tipodoc, dni, cargo, sector, fechaingreso, idasistente], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
