@@ -288,6 +288,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
 app.post('/addasistentes', (req, res) => {
     pool.getConnection((err, connection) => {
     const params = req.body
+    console.log(params)
     params.forEach(element => {
         connection.query('INSERT INTO asistencia SET ?', element, (err, rows) => {
             })})
