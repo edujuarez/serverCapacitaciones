@@ -144,6 +144,7 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
 
         //query(sqlString, callback)
         const {
+            categoria,
             nombre,
             temario,
             tipo,
@@ -152,10 +153,14 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
             plan,
             material,
             observaciones,
+            modalidad,
+            idcapacitacion,
+            eliminado,
+            duracion
         } = req.body
 
-        connection.query('UPDATE capacitaciones SET nombre = ?, temario = ?, tipo = ?, certificacion = ?, fecha = ?, plan = ?, material = ?, observaciones = ?, invitados = ? WHERE idcapacitaciones = ?',
-        [nombre, temario, tipo, certificacion, fecha, plan, material, observaciones, invitados], (err, rows) => {
+        connection.query('UPDATE capacitaciones SET nombre = ?, temario = ?, tipo = ?, certificacion = ?, fecha = ?, plan = ?, material = ?, observaciones = ?, modalidad = ?, categoria = ?, eliminado = ?, duracion = ? WHERE idcapacitaciones = ?',
+        [nombre, temario, tipo, certificacion, fecha, plan, material, observaciones, modalidad, categoria, eliminado, duracion, idcapacitacion], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
