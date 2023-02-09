@@ -62,7 +62,7 @@ app.post('/capacitaciones/nuevo', (req, res) => {
 app.get('/capacitaciones', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending all capacitaciones`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from capacitaciones WHERE eliminado = 0',(err, rows) => {
@@ -81,7 +81,7 @@ app.get('/capacitaciones', (req, res)=> {
 app.delete('/capacitaciones/:idcapacitaciones/delete', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Delete capacitacion with id ${req.params.idcapacitaciones}`)
         //query(sqlString, callback)
         connection.query('DELETE from capacitaciones WHERE idcapacitacion = ?', [req.params.idcapacitaciones], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
@@ -120,7 +120,7 @@ app.put(`/deletecapacitacion`, (req, res)=> {
 app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending capacitacion with id ${req.params.idcapacitaciones}`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from capacitaciones WHERE idcapacitacion = ? AND eliminado = 0', [req.params.idcapacitaciones], (err, rows) => {
@@ -141,7 +141,7 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
     const capacitacionSeleccionada = req.params.idcapacitacion;
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}, for update capacitacion ${capacitacionSeleccionada}`)
 
         //query(sqlString, callback)
         const {
@@ -182,7 +182,7 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
 app.get('/asistente', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistentes`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistentes',(err, rows) => {
@@ -201,7 +201,7 @@ app.get('/asistente', (req, res)=> {
 app.get('/asistente/:id', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistente with id ${req.params.id}`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistentes WHERE idasistente = ?', [req.params.id], (err, rows) => {
@@ -240,7 +240,7 @@ app.post('/asistente/nuevo', (req, res)=> {
     res.header("Access-Control-Allow-Origin", "*")
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected to add as id ${connection.threadId}`)
+        console.log(`connected to add as id ${connection.threadId}. Adding asistente: ${req.body.nombre}`)
 
         //query(sqlString, callback)
         const params = req.body
@@ -264,7 +264,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
         //determino id de asistente desde la url
         const idasistente = req.params.idasistente;
         if(err) throw err
-        console.log(`connected to edit as id ${connection.threadId}`)
+        console.log(`connected to edit as id ${connection.threadId}. Editing asistente: ${req.body.nombre}`)
         const {
             nombre,
             legajo,
@@ -294,7 +294,7 @@ app.put('/asistente/:idasistente/edit', (req, res)=> {
 app.post('/addasistentes', (req, res) => {
     pool.getConnection((err, connection) => {
     const params = req.body
-    console.log(params)
+    console.log(`connected to edit as id ${connection.threadId}. Sending asistentes to capacitacion: ${req.body.capacitacionID}`)
     params.forEach(element => {
         connection.query('INSERT INTO asistencia SET ?', element, (err, rows) => {
             })})
@@ -311,7 +311,7 @@ app.post('/addasistentes', (req, res) => {
 app.get('/addasistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistentes to capacitacion: ${req.params.idcapacitacion}`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistencia WHERE capacitacionID = ? AND eliminado = 0', [req.params.idcapacitacion], (err, rows) => {
@@ -331,7 +331,7 @@ app.get('/addasistentes/:idcapacitacion', (req, res)=> {
 app.get('/asistencia', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistencias`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistencia',(err, rows) => {
@@ -350,7 +350,7 @@ app.get('/asistencia', (req, res)=> {
 app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Editing asistentes: ${req.body.nombre}`)
 
         //query(sqlString, callback)
         const {
@@ -380,7 +380,7 @@ app.put(`/addasistes/:idcapacitacion/edit`, (req, res)=> {
 app.get('/asistentes/', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistentes`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistencia WHERE eliminado = 0', (err, rows) => {
@@ -399,7 +399,7 @@ app.get('/asistentes/', (req, res)=> {
 app.get('/asistentes/:idcapacitacion', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistentes to capacitacion: ${req.params.idcapacitacion}`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistencia WHERE capacitacionID = ?', [req.params.idcapacitacion], (err, rows) => {
@@ -419,7 +419,7 @@ app.get('/asistentes/:idcapacitacion', (req, res)=> {
 app.get('/asistencia/:id', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Sending asistencia with id: ${req.params.id}`)
 
         //query(sqlString, callback)
         connection.query('SELECT * from asistencia WHERE id = ?', [req.params.id], (err, rows) => {
@@ -439,7 +439,7 @@ app.get('/asistencia/:id', (req, res)=> {
 app.put(`/updatepuntaje`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Editing puntaje: ${req.body.id}`)
         const {
             id,
             puntaje,
@@ -464,7 +464,7 @@ app.put(`/updatepuntaje`, (req, res)=> {
 app.put(`/deleteasistente`, (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}.  Deactivating asistente: ${req.body.id}`)
         const {
             id,
             puntaje
@@ -486,7 +486,7 @@ app.put(`/deleteasistente`, (req, res)=> {
 app.delete('/deleteasistente/:idasistente', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Deleting asistente: ${req.params.idasistente}`)
         //query(sqlString, callback)
         connection.query('DELETE from asistencia WHERE id = ?', [req.params.idasistente], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
@@ -503,7 +503,7 @@ app.delete('/deleteasistente/:idasistente', (req, res)=> {
 app.get('/filter/', (req, res)=> {
     pool.getConnection((err, connection) => {
         if(err) throw err
-        console.log(`connected as id ${connection.threadId}`)
+        console.log(`connected as id ${connection.threadId}. Filtering asistentes`)
         const {
             busqueda,
             finicio,
