@@ -158,10 +158,11 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
             plan,
             temario,
             tipo,
+            capacitador
         } = req.body
 
-        connection.query('UPDATE capacitaciones SET categoria = ?, certificacion = ?, duracion = ?, eliminado = ?, fecha = ?, idcapacitacion = ?, material = ?, modalidad = ?, nombre = ?, observaciones = ?, plan = ?, temario = ?, tipo = ?  WHERE idcapacitacion = ?',
-        [categoria, certificacion, duracion, eliminado, fecha, idcapacitacion, material, modalidad, nombre, observaciones, plan, temario, tipo, capacitacionSeleccionada], (err, rows) => {
+        connection.query('UPDATE capacitaciones SET categoria = ?, certificacion = ?, duracion = ?, eliminado = ?, fecha = ?, idcapacitacion = ?, material = ?, modalidad = ?, nombre = ?, observaciones = ?, plan = ?, temario = ?, tipo = ?, capacitador = ?  WHERE idcapacitacion = ?',
+        [categoria, certificacion, duracion, eliminado, fecha, idcapacitacion, material, modalidad, nombre, observaciones, plan, temario, tipo, capacitador, capacitacionSeleccionada], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
