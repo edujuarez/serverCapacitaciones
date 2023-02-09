@@ -138,6 +138,7 @@ app.get('/capacitaciones/:idcapacitaciones', (req, res)=> {
 
 //Edit/update de capacitaciones
 app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
+    const idcapacitacion = req.params.idcapacitacion;
     pool.getConnection((err, connection) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
@@ -145,22 +146,22 @@ app.put(`/capacitaciones/:idcapacitacion/edit`, (req, res)=> {
         //query(sqlString, callback)
         const {
             categoria,
+            certificacion,
+            duracion,
+            eliminado,
+            fecha,
+            idcapacitacion,
+            material,
+            modalidad,
             nombre,
+            observaciones,
+            plan,
             temario,
             tipo,
-            certificacion,
-            fecha,
-            plan,
-            material,
-            observaciones,
-            modalidad,
-            idcapacitacion,
-            eliminado,
-            duracion
         } = req.body
 
-        connection.query('UPDATE capacitaciones SET nombre = ?, temario = ?, tipo = ?, certificacion = ?, fecha = ?, plan = ?, material = ?, observaciones = ?, modalidad = ?, categoria = ?, eliminado = ?, duracion = ? WHERE idcapacitaciones = ?',
-        [nombre, temario, tipo, certificacion, fecha, plan, material, observaciones, modalidad, categoria, eliminado, duracion, idcapacitacion], (err, rows) => {
+        connection.query('UPDATE capacitaciones SET categoria = ?, certificacion = ?, duracion = ?, eliminado = ?, fecha = ?, idcapacitacion = ?, material = ?, modalidad = ?, nombre = ?, observaciones = ?, plan = ?, temario = ?, tipo = ?,  WHERE idcapacitacion = ?',
+        [categoria, certificacion, duracion, eliminado, fecha, idcapacitacion, material, modalidad, nombre, observaciones, plan, temario, tipo, idcapacitacion], (err, rows) => {
             connection.release() //devuelve la conecction a la pool
 
             if (!err) {
